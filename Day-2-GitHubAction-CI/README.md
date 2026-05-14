@@ -1,267 +1,289 @@
-# DevOps Flask Application with Docker & Docker Compose 🚀
+# Day 2 — CI Pipeline with GitHub Actions
 
-A lightweight DevOps project demonstrating containerization of a Python Flask application using Docker and Docker Compose with Redis integration.
-
-This project showcases:
-- Multi-stage Docker builds
-- Containerized Flask application
-- Docker Compose orchestration
-- Redis service integration
-- Environment variable management
-- Persistent Docker volumes
-- Health endpoint implementation
+> Automated CI pipeline using GitHub Actions for linting, testing, and Docker image build/push.
 
 ---
 
-# 📁 Project Structure
+# Project Overview
+
+This project demonstrates a complete CI workflow using GitHub Actions.
+
+Every push to the `main` branch automatically triggers:
+
+- Code linting using **flake8**
+- Code formatting validation using **black**
+- Unit testing using **pytest**
+- Docker image build and push to Docker Hub
+
+The pipeline follows a dependency chain:
+
+```text
+Lint → Test → Docker Build
+```
+
+If one stage fails, the next stage will not run.
+
+---
+
+# Project Structure
 
 ```bash
-devops-project/
-│
+Day-2-GitHubAction-CI/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── app.py
 ├── Dockerfile
 ├── docker-compose.yml
-├── app.py
 ├── requirements.txt
-└── README.md
+├── setup.cfg
+├── conftest.py
+└── tests/
+    └── test_app.py
 ```
 
 ---
 
-# ⚙️ Technologies Used
+# CI Pipeline Workflow
 
-- Python 3.11
-- Flask
-- Redis
-- Docker
-- Docker Compose
-
----
-
-# 📦 Application Features
-
-✅ Flask REST API  
-✅ Dockerized application  
-✅ Multi-stage optimized Docker build  
-✅ Redis container integration  
-✅ Environment variable support  
-✅ Health check endpoint  
-✅ Persistent Redis storage using Docker volumes  
-✅ Lightweight and production-friendly setup  
-
----
-
-# 🐳 Dockerfile Highlights
-
-The project uses a **multi-stage Docker build** for optimization:
-
-### Stage 1 — Builder
-- Installs Python dependencies
-- Reduces unnecessary runtime packages
-
-### Stage 2 — Runtime
-- Copies only required dependencies
-- Keeps image lightweight
-- Runs Flask application securely
+```text
+Push Code to GitHub
+        │
+        ▼
+┌──────────────────┐
+│ Lint Job         │
+│ flake8 + black   │
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│ Test Job         │
+│ pytest           │
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│ Docker Build Job │
+│ Build + Push     │
+└──────────────────┘
+```
 
 ---
 
-# 🚀 API Endpoints
+# GitHub Actions Workflow
 
-## Home Endpoint
+## `.github/workflows/ci.yml`
+
+```yaml
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+
+  lint:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: Day-2-GitHubAction-CI
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install lint tools
+        run: pip install flake8 black
+
+      - name: Run flake8
+        run: flake8 app.py tests/
+
+      - name: Run black check
+        run: black --check app.py tests/
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+
+    defaults:
+      run:
+        working-directory: Day-2-GitHubAction-CI
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest tests/ -v
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v5
+        with:
+          context: Day-2-GitHubAction-CI
+          push: true
+          tags: username/myapp:latest
+```
+
+---
+
+# Running Locally
+
+## Install Dependencies
 
 ```bash
-GET /
+pip install -r requirements.txt
 ```
 
-### Sample Response
-
-```json
-{
-  "message": "Hello DevOps!",
-  "version": "1.0.0"
-}
-```
-
----
-
-## Health Check Endpoint
+## Run Tests
 
 ```bash
-GET /health
+pytest tests/ -v
 ```
 
-### Sample Response
-
-```json
-{
-  "status": "ok"
-}
-```
-
----
-
-# 🔧 Setup & Installation
-
-## 1️⃣ Clone Repository
+## Run flake8
 
 ```bash
-git clone https://github.com/ashyT-Cloud/devops-project.git
-cd devops-project
+flake8 app.py tests/
 ```
 
----
-
-# 🐳 Running with Docker
-
-## Build Docker Image
+## Run black Check
 
 ```bash
-docker build -t flask-devops-app .
+black --check app.py tests/
 ```
 
-## Run Container
+## Auto Format Code
 
 ```bash
-docker run -d -p 5000:5000 flask-devops-app
+black app.py tests/
 ```
 
 ---
 
-# 🧩 Running with Docker Compose
+# GitHub Secrets Setup
 
-## Start Services
+Go to:
 
-```bash
-docker compose up -d
+```text
+GitHub Repository
+→ Settings
+→ Secrets and Variables
+→ Actions
 ```
 
-## Check Running Containers
+Add:
 
-```bash
-docker ps
-```
-
-## Stop Services
-
-```bash
-docker compose down
-```
+| Secret Name | Description |
+|---|---|
+| `DOCKERHUB_USERNAME` | Docker Hub username |
+| `DOCKERHUB_TOKEN` | Docker Hub access token |
 
 ---
 
-# 🌐 Access Application
+# Key Concepts Learned
 
-Open in browser:
+## GitHub Actions
 
-```bash
-http://<server-ip>:5000
+GitHub Actions automates tasks like testing, building, and deployment whenever code changes are pushed.
+
+---
+
+## `needs:` Dependency
+
+```yaml
+needs: lint
 ```
 
-Health endpoint:
+Ensures jobs run in sequence.
 
-```bash
-http://<server-ip>:5000/health
-```
+Example:
 
----
-
-# 📜 Docker Compose Services
-
-## Flask App Service
-- Builds custom Docker image
-- Exposes port `5000`
-- Uses environment variables
-- Depends on Redis service
-
-## Redis Service
-- Uses official Redis Alpine image
-- Exposes port `6379`
-- Stores persistent data using Docker volumes
-
----
-
-# 📂 Environment Variables
-
-| Variable | Description |
-|----------|-------------|
-| APP_VERSION | Application version |
-| REDIS_URL | Redis connection URL |
-
----
-
-# 📌 requirements.txt
-
-```txt
-flask==3.0.3
-redis==5.0.4
+```text
+lint must pass
+→ then test runs
+→ then docker build runs
 ```
 
 ---
 
-# 🔍 Useful Docker Commands
+## flake8
 
-## View Logs
+Checks coding style issues like:
 
-```bash
-docker compose logs -f
-```
-
-## Enter Running Container
-
-```bash
-docker exec -it <container_id> sh
-```
-
-## Remove Containers
-
-```bash
-docker compose down -v
-```
+- Unused imports
+- Missing blank lines
+- Long lines
 
 ---
 
-# 🎯 Learning Outcomes
+## black
 
-Through this project, I learned:
-
-- Docker image creation
-- Multi-stage Docker builds
-- Docker Compose orchestration
-- Container networking
-- Volume management
-- Flask container deployment
-- Redis integration
-- DevOps project structuring
+Automatically formats Python code to maintain consistent style.
 
 ---
 
-# 👨‍💻 Author
+## pytest
 
-## Ashish Thakur
-
-Aspiring Cloud & DevOps Engineer passionate about:
-- Docker
-- Kubernetes
-- AWS
-- CI/CD
-- Cloud Infrastructure
+Framework used for automated unit testing.
 
 ---
 
-# ⭐ Future Improvements
+# Problems Fixed During Setup
 
-- Add Nginx reverse proxy
-- Implement CI/CD pipeline
-- Add Kubernetes deployment manifests
-- Add monitoring with Prometheus & Grafana
-- Deploy on AWS EC2
+| Error | Fix |
+|---|---|
+| `.github` folder not detected | Moved to repository root |
+| `test/ not found` | Corrected to `tests/` |
+| `actions/chekout` typo | Fixed to `actions/checkout@v4` |
+| flake8 line length errors | Added `setup.cfg` |
+| `ModuleNotFoundError` | Added `conftest.py` |
 
 ---
 
-# 📄 License
+# Outcome
 
-This project is open-source and available under the MIT License.
+By the end of Day 2:
 
+- CI pipeline became fully automated
+- Code quality checks were enforced
+- Docker image builds became automatic
+- GitHub Actions workflow was successfully integrated
 
-Day 2:
-![CI](https://github.com/ashyT-Cloud/devops-project/actions/workflows/ci.yml/badge.svg)
+---
+
+# Next Step
+
+## Day 3 — Terraform Infrastructure Automation
+
+Upcoming topics:
+
+- Terraform basics
+- AWS EC2 provisioning
+- Variables and outputs
+- Infrastructure as Code (IaC)
+
+---
+
+*Part of the DevOps Hands-on Project Series.*
