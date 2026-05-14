@@ -30,7 +30,7 @@ jobs:
         run: flake8 app.py tests/
 
       - name: Run black (check only)
-        run: black --check app.py test/
+        run: black --check app.py tests/
 
   test:
     name: Test
