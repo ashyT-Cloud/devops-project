@@ -1,0 +1,8 @@
+cat >> ~/devops-project/.gitignore << 'EOF'
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars
+EOF
