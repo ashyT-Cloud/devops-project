@@ -1,0 +1,50 @@
+name: CD Pipeline
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Copy deploy script to EC2
+        run: |
+          scp -i ~/.ssh/deploy_key \
+            Day-4-CD-Pipeline/deploy.sh \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/deploy.sh
+
+      - name: Run deploy script on EC2
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
+            "chmod +x ~/deploy.sh && \
+             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} \
+             APP_VERSION=${{ github.sha }} \
+             ~/deploy.sh"
+
+      - name: Smoke test from GitHub Actions runner
+        run: |
+          sleep 5
+          curl -f http://${{ secrets.EC2_HOST }}:5000/health
+
+      - name: Print deployment info
+        run: |
+          echo "Deployed commit: ${{ github.sha }}"
+          echo "App URL: http://${{ secrets.EC2_HOST }}:5000"
