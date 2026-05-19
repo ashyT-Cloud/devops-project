@@ -16,7 +16,7 @@ A complete hands-on DevOps learning journey covering Docker, CI/CD, Terraform, K
 | Day 1 | Dockerized Flask Application | ✅ Completed |
 | Day 2 | CI Pipeline with GitHub Actions | ✅ Completed |
 | Day 3 | Infrastructure as Code with Terraform | ✅ Completed |
-| Day 4 | Continuous Deployment Pipeline | 🔜 Upcoming |
+| Day 4 | Continuous Deployment Pipeline | ✅ Completed  |
 | Day 5 | Monitoring with Prometheus & Grafana | 🔜 Upcoming |
 
 ---
@@ -56,6 +56,16 @@ DevOps-Projects/
 │   └── terraform.tfstate.backup
 │
 ├── Day-4-CD-Pipeline/
+│   ├── app.py
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   ├── requirements.txt
+│   ├── conftest.py
+│   ├── setup.cfg
+│   ├── deploy.sh
+│   ├── tests/
+│   │   └── test_app.py
+│   └── README.md
 │
 ├── Day-5-Monitoring/
 │
@@ -129,16 +139,21 @@ DevOps-Projects/
 
 ---
 
-# Upcoming Projects
+## Day 4 — CD Pipeline: Auto Deploy on Push
 
-## Day 4 — Continuous Deployment
+### Topics Covered
 
-- Automated deployments
-- Deployment workflows
-- Server automation
-- End-to-end CI/CD
+- Continuous Deployment (CD)
+- GitHub Actions workflow automation
+- SSH automation to AWS EC2
+- Docker deployment automation
+- Smoke testing
+- Automated production deployment
 
 ---
+
+# Upcoming Projects
+
 
 ## Day 5 — Monitoring
 
