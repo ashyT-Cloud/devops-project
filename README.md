@@ -17,7 +17,7 @@ A complete hands-on DevOps learning journey covering Docker, CI/CD, Terraform, K
 | Day 2 | CI Pipeline with GitHub Actions | ✅ Completed |
 | Day 3 | Infrastructure as Code with Terraform | ✅ Completed |
 | Day 4 | Continuous Deployment Pipeline | ✅ Completed  |
-| Day 5 | Monitoring with Prometheus & Grafana | 🔜 Upcoming |
+| Day 5 | Monitoring with Prometheus & Grafana | ✅ Completed |
 
 ---
 
@@ -68,6 +68,16 @@ DevOps-Projects/
 │   └── README.md
 │
 ├── Day-5-Monitoring/
+│    ├── docker-compose.yml        # All 3 containers: app + prometheus + grafana
+│    ├── prometheus.yml            # Scrape config — what Prometheus monitors
+│    └── app/
+│        ├── app.py                # Flask app with /metrics endpoint
+│        ├── Dockerfile            # Multi-stage build
+│        ├── requirements.txt      # Includes prometheus-flask-exporter
+│        ├── conftest.py           # Pytest path config
+│        ├── setup.cfg             # flake8 config
+│        └── tests/
+│            └── test_app.py       # Unit tests
 │
 └── README.md
 ```
@@ -152,15 +162,33 @@ DevOps-Projects/
 
 ---
 
-# Upcoming Projects
+## Day 5 — Monitoring with Prometheus & Grafana
 
+Topics covered:
 
-## Day 5 — Monitoring
-
-- Prometheus setup
+- Metrics collection
+- Prometheus monitoring
 - Grafana dashboards
-- Metrics monitoring
-- Alerting system
+- Docker Compose monitoring stack
+- Application observability
+
+# Complete CI/CD Workflow
+
+```text
+Code Push
+   │
+   ▼
+CI Pipeline
+(Lint → Test → Docker Build)
+   │
+   ▼
+CD Pipeline
+(Deploy to EC2)
+   │
+   ▼
+Monitoring Stack
+(Prometheus + Grafana)
+```
 
 ---
 
@@ -176,6 +204,17 @@ This project series focuses on:
 - Production-ready practices
 
 ---
+
+# Final Outcome
+
+By completing this project series:
+
+- Applications were containerized using Docker
+- CI/CD pipelines were automated using GitHub Actions
+- Infrastructure was provisioned using Terraform
+- Continuous deployment was implemented on AWS EC2
+- Monitoring and observability were added using Prometheus and Grafana
+
 
 # Author
 
