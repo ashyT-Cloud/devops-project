@@ -27,6 +27,6 @@ sleep 5
 
 # Smoke test - verify app is responding
 echo "Running smoke test..."
-curl -f htttp://localhost:5000/health || exit 1
+curl -f http://localhost:5000/health || exit 1
 
 echo "=== Deployment successful ==="
