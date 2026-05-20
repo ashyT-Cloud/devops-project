@@ -19,6 +19,16 @@ A complete hands-on DevOps learning journey covering Docker, CI/CD, Terraform, K
 | Day 4 | Continuous Deployment Pipeline | ✅ Completed  |
 | Day 5 | Monitoring with Prometheus & Grafana | ✅ Completed |
 
+──────── Extension: Kubernetes Journey ────────
+
+| Day | Topic | Status |
+|------|--------|--------|
+| Day 6 | K8s Core Concepts (Pod, Deployment, Service) | ✅ Completed |
+| Day 7 | ConfigMaps & Secrets + Probes | ⏳ Upcoming |
+| Day 8 | Auto Scaling + Rolling Updates | ⏳ Upcoming |
+| Day 9 | Helm | ⏳ Upcoming |
+| Day 10 | AWS EKS Deployment | ⏳ Upcoming |
+
 ---
 
 # Repository Structure
@@ -79,7 +89,14 @@ DevOps-Projects/
 │        └── tests/
 │            └── test_app.py       # Unit tests
 │
+├── Day-6-K8s-Basics/
+├── Day-7-K8s-ConfigMaps-Secrets/
+├── Day-8-K8s-Autoscaling/
+├── Day-9-Helm/
+└── Day-10-EKS/
+│
 └── README.md
+
 ```
 
 ---
@@ -95,6 +112,14 @@ DevOps-Projects/
 - Kubernetes
 - Prometheus
 - Grafana
+
+### Kubernetes Extension (Days 6–10)
+
+- Kubernetes
+- kubectl
+- minikube
+- Helm
+- AWS EKS
 
 ---
 
