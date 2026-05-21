@@ -24,7 +24,7 @@ A complete hands-on DevOps learning journey covering Docker, CI/CD, Terraform, K
 | Day | Topic | Status |
 |------|--------|--------|
 | Day 6 | K8s Core Concepts (Pod, Deployment, Service) | ✅ Completed |
-| Day 7 | ConfigMaps & Secrets + Probes | ⏳ Upcoming |
+| Day 7 | ConfigMaps & Secrets + Probes | ✅ Completed |
 | Day 8 | Auto Scaling + Rolling Updates | ⏳ Upcoming |
 | Day 9 | Helm | ⏳ Upcoming |
 | Day 10 | AWS EKS Deployment | ⏳ Upcoming |
@@ -90,7 +90,12 @@ DevOps-Projects/
 │            └── test_app.py       # Unit tests
 │
 ├── Day-6-K8s-Basics/
-├── Day-7-K8s-ConfigMaps-Secrets/
+├── Day-7-K8s-Config/
+│   └── manifests/
+│       ├── configmap.yaml
+│       ├── secret.yaml
+│       ├── deployment.yaml
+│       └── service.yaml
 ├── Day-8-K8s-Autoscaling/
 ├── Day-9-Helm/
 └── Day-10-EKS/
@@ -112,6 +117,36 @@ DevOps-Projects/
 - Kubernetes
 - Prometheus
 - Grafana
+- Python
+- Flask
+- Linux
+- CI/CD
+- Infrastructure as Code (IaC)
+
+---
+
+# DevOps Topics Covered
+
+- Docker containerization
+- GitHub Actions CI/CD
+- Terraform infrastructure automation
+- Continuous Deployment
+- Monitoring and Observability
+- AWS EC2 deployment
+---
+
+# Kubernetes Topics Covered
+
+- Pods
+- Deployments
+- Services
+- ConfigMaps
+- Secrets
+- Liveness Probes
+- Readiness Probes
+- Self-healing deployments
+
+---
 
 ### Kubernetes Extension (Days 6–10)
 
