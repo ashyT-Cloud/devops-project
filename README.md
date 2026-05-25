@@ -25,7 +25,7 @@ A complete hands-on DevOps learning journey covering Docker, CI/CD, Terraform, K
 |------|--------|--------|
 | Day 6 | K8s Core Concepts (Pod, Deployment, Service) | ✅ Completed |
 | Day 7 | ConfigMaps & Secrets + Probes | ✅ Completed |
-| Day 8 | Auto Scaling + Rolling Updates | ⏳ Upcoming |
+| Day 8 | Auto Scaling + Rolling Updates | ✅ Completed |
 | Day 9 | Helm | ⏳ Upcoming |
 | Day 10 | AWS EKS Deployment | ⏳ Upcoming |
 
@@ -96,7 +96,13 @@ DevOps-Projects/
 │       ├── secret.yaml
 │       ├── deployment.yaml
 │       └── service.yaml
-├── Day-8-K8s-Autoscaling/
+└── Day-8-K8s-Scaling/
+│    └── manifests/
+│        ├── configmap.yaml      # unchanged from Day 7
+│        ├── secret.yaml         # unchanged from Day 7
+│        ├── deployment.yaml     # updated: rolling update strategy + resources
+│        ├── service.yaml        # unchanged from Day 7
+│        └── hpa.yaml            # NEW: HorizontalPodAutoscaler
 ├── Day-9-Helm/
 └── Day-10-EKS/
 │
