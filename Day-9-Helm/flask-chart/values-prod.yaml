@@ -1,0 +1,25 @@
+replicaCount: 3
+
+image:
+  tag: "1.0.0"
+
+config:
+  APP_VERSION: "1.0.0"
+  APP_ENV: "production"
+  LOG_LEVEL: "WARNING:
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPerscentage: 50
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "128m"
+  limits:
+    memory: "256Mi"
+    cpu: "500m"
+
+

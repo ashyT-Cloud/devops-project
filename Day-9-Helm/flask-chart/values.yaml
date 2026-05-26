@@ -1,0 +1,60 @@
+# Application
+replicaCount: 2
+
+image:
+  repository: ashytcloud/myapp
+  tag: latest
+  pullPolicy: Always
+
+# Service
+service:
+  type: NodePort
+  port: 80
+  targetPort: 5000
+  nodePort: 30080
+
+# Resources
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "100m"
+  limits:
+    memory: "128Mi"
+    cpu: "250m"
+
+#  ConfigMap values
+config:
+  APP_VERSION: "1.0.0"
+  APP_ENV: "production"
+  LOG_LEVEL: "INFO"
+  PORT: "5000"
+
+# Seret values (bases64 encoded)
+secret:
+  SECRET_KEY: ZGV2b3BzLXNlY3JldC1rZXktMTIz
+  DB_PASSWORD: c3VwZXJzZWNyZXRwYXNz
+
+# hpa
+autoscaling:
+  enables: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
+
+# Probes
+livenessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshod: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  failureThreshold: 3
+  timeoutSeconds: 3
+
+# Rolling updates
+strategy:
+  maxSurege: 1
+  maxUnavailable: 0

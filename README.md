@@ -26,7 +26,7 @@ A complete hands-on DevOps learning journey covering Docker, CI/CD, Terraform, K
 | Day 6 | K8s Core Concepts (Pod, Deployment, Service) | ✅ Completed |
 | Day 7 | ConfigMaps & Secrets + Probes | ✅ Completed |
 | Day 8 | Auto Scaling + Rolling Updates | ✅ Completed |
-| Day 9 | Helm | ⏳ Upcoming |
+| Day 9 | Helm | ✅ Completed  |
 | Day 10 | AWS EKS Deployment | ⏳ Upcoming |
 
 ---
@@ -104,6 +104,18 @@ DevOps-Projects/
 │        ├── service.yaml        # unchanged from Day 7
 │        └── hpa.yaml            # NEW: HorizontalPodAutoscaler
 ├── Day-9-Helm/
+│         └── flask-chart/
+│              ├── Chart.yaml                  # chart metadata + version
+│              ├── values.yaml                 # default values (all environments)
+│              ├── values-staging.yaml         # staging overrides
+│              ├── values-prod.yaml            # production overrides
+│              └── templates/
+│                  ├── _helpers.tpl            # reusable name + label helpers
+│                  ├── deployment.yaml         # templated Deployment
+│                  ├── service.yaml            # templated Service
+│                  ├── configmap.yaml          # templated ConfigMap
+│                  ├── secret.yaml             # templated Secret
+│                  └── hpa.yaml                # conditional HPA
 └── Day-10-EKS/
 │
 └── README.md

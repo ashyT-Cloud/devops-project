@@ -1,0 +1,21 @@
+replicaCount: 1
+
+config:
+  APP_VERSION: "staging"
+  APP_ENV: "staging"
+  LOG_LEVEL: "DEBUG"
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 70
+
+resources:
+  requests:
+    memory: "32Mi"
+    cpu: "50"
+  limits:
+    memory: "64Mi"
+    cpu: "100"
+
