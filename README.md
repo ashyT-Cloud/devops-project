@@ -27,7 +27,7 @@ A complete hands-on DevOps learning journey covering Docker, CI/CD, Terraform, K
 | Day 7 | ConfigMaps & Secrets + Probes | ✅ Completed |
 | Day 8 | Auto Scaling + Rolling Updates | ✅ Completed |
 | Day 9 | Helm | ✅ Completed  |
-| Day 10 | AWS EKS Deployment | ⏳ Upcoming |
+| Day 10 | AWS EKS Deployment | ✅ Completed |
 
 ---
 
@@ -116,7 +116,15 @@ DevOps-Projects/
 │                  ├── configmap.yaml          # templated ConfigMap
 │                  ├── secret.yaml             # templated Secret
 │                  └── hpa.yaml                # conditional HPA
-└── Day-10-EKS/
+Day-10-EKS/
+├── README.md
+├── cluster.yaml
+├── helm-values
+│   ├── values-prod.yaml
+│   └── values-staging.yaml
+├── ingress.yaml
+└── namespaces.yaml
+
 │
 └── README.md
 
