@@ -1,0 +1,48 @@
+name: Day11 CI/CD Pipeline
+
+on:
+  push:
+    paths:
+      - 'Day-11-CI-CD-K8s/**'
+
+jobs:
+  docker-build:
+    name: Docker Build & Push
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: Day-11-CI-CD-K8s/app
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Day-11-CI-CD-K8s/app
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/day11-flask-app:latest
+
+  deploy:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    needs: docker-build
+
+    steps:
+      - name: SSH into EC2 and restart deployment
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            kubectl set image deployment/flask-app flask-container=${{ secrets.DOCKERHUB_USERNAME }}/day11-flask-app:latest
+            kubectl rollout status deployment/flask-app
